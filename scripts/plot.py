@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 
 
 # parameters to modify 
-filename="../assignment2/millionreadshighp.txt"
+filename="../assignment2/ping0001.txt"
 label='python'
-xlabel = 'time'
-ylabel = 'read'
-title='CDF of Million reads high performance mode'
-fig_name='CDFmillionreadshighp.png'
+xlabel = 'time/ms'
+ylabel = ''
+title='CDF of 1000 pings with interval of 0.0001s'
+fig_name='CDFping0001.png'
 bins=100000 #adjust the number of bins to your plot
 
 ## load data from input file

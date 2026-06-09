@@ -32,7 +32,7 @@ def matmul_slow(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
         for j in range(n):
             total = 0.0
             for k in range(n):
-                total += a[i][k] * b[k][j]
+                total += a[i][k] * b[k][j]  #single matrix cell calculation repeats n times
             c[i][j] = total
 
 
