@@ -99,7 +99,7 @@ Remember, each function has an associated .text section and stack region for dat
 
 ### The critical layout fact
 
-During allocation of stack space, the stack grows **downward**, by decrementing the stack pointer (0x7fff...). Naturally, when subsequently accessing a stack pointer during execution, the buffer grows upwards (i.e., buf[1] is at a larger address than buf[0], which means its at a "higher" location). Writing past the end of `buf` therefore writes into higher-addressed memory, directly toward the saved `RBP` and then the return address.
+During allocation of stack space, the stack grows **downward**, by decrementing the stack pointer (0x7fff...). Naturally, when subsequently accessing a stack pointer during execution, the buffer grows upwards (i.e., buf[1] is at a larger address than buf[0], which means it's at a "higher" location). Writing past the end of `buf` therefore writes into higher-addressed memory, directly toward the saved `RBP` and then the return address.
 
 If an attacker controls what gets written past the end of `buf`, they control where the function returns.
 
