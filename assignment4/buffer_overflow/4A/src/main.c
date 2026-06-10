@@ -6,7 +6,7 @@
 
 // In this program, there are a few important functions.
 // Consider victim as a utility function that exists in some large codebase somewhere, that someone built
-// without considering it's security implications. 
+// without considering its security implications. 
 // This victim function accepts a str pointer, and copies the content of this str pointer
 // to a local buffer that has a fixed value of 16 characters. 
 // The first question you should ask is, what happens if your input string is more than 16 bytes?
@@ -17,7 +17,7 @@
 // What happens if the return address is in the path of this buffer pointer?
 // Well, it will be overwritten with whatever the string contains.
 // So when the function returns, you will jump to whatever you wrote to the address of the return pointer
-// This means you can controll where the user returns by controling the input to this function!
+// This means you can control where the user returns by controlling the input to this function!
 
 // OUR GOAL: make victim return to steal password instead of main!    <--- Your objective! 
 
@@ -33,7 +33,7 @@ void victim(char* str)
 
 
 // Steal password is a function that lives in the same program as the victim function (obviously). 
-// Naturally, code that you may be attacking will not convinently have malicous functions that 
+// Naturally, code that you may be attacking will not conveniently have malicous functions that 
 // leak critical information of the program, but we just make this assumption for now.
 // Exercise 2 demonstrates that there are many ways around this assumption,
 // including executing shell code, return-oriented-programing, and others. 
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    int address_start_byte = atoi(argv[1]); // the C program recieves input ints as strings. Convert the input to an int. 
+    int address_start_byte = atoi(argv[1]); // the C program receives input ints as strings. Convert the input to an int. 
 
 
     //////////////////////////////////
@@ -106,9 +106,13 @@ int main(int argc, char* argv[])
     char evil_str[128];
     for (int j = 0; j < 128; j++) evil_str[j] = 0x41;  // Fill entire buffer
     
-    append_address(evil_str, address_start_byte, function_addr);
-    // hexdump_arr(evil_str);   // Uncomment for debug
-
+    //append_address(evil_str, address_start_byte, function_addr);
+    append_address(evil_str, 0, 0xdeadbeef);
+    hexdump_arr(evil_str);   // Uncomment for debug
+    printf("address 0: 0x%x\n", evil_str[0]);
+    printf("address 1: 0x%x\n", evil_str[1]);
+    printf("address 2: 0x%x\n", evil_str[2]);
+    printf("address 3: 0x%x\n", evil_str[3]);
     // Call the victim with normal input
     victim("0123456789ABCDE"); // Normal input of expected length == 16. No issues here
 
