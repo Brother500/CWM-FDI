@@ -36,22 +36,17 @@ def safe_check(username: str, password: str) -> bool:
         return False
 
     result = True
-
+    
     for i, ch in enumerate(password):
         # i == index of the current character
         # ch == current character
-        
         # code below is vulnerable. Fix it!
         # then replace _vulnerable_check with safe_check in login_view() below
-        if i >= len(SECRET_PASSWORD):
-            return False
-        if ch != SECRET_PASSWORD[i]:
-            t = len(password) - i
-            for n in range (0,t):
-                time.sleep(DELAY_PER_CHAR)
-            return False
+        if i >= len(SECRET_PASSWORD) or ch != SECRET_PASSWORD[i]:
+            result = False
         time.sleep(DELAY_PER_CHAR)
-
+    if result == False:
+        return False
     return len(password) == len(SECRET_PASSWORD)
 
 

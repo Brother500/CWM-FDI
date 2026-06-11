@@ -109,10 +109,10 @@ int main(int argc, char* argv[])
     //append_address(evil_str, address_start_byte, function_addr);
     append_address(evil_str, 0, 0xdeadbeef);
     hexdump_arr(evil_str);   // Uncomment for debug
-    printf("address 0: 0x%x\n", evil_str[0]);
-    printf("address 1: 0x%x\n", evil_str[1]);
-    printf("address 2: 0x%x\n", evil_str[2]);
-    printf("address 3: 0x%x\n", evil_str[3]);
+    printf("address 0: 0x%lx\n", &evil_str[0]);
+    printf("address 1: 0x%lx\n", &evil_str[1]);
+    printf("address 2: 0x%lx\n", &evil_str[2]);
+    printf("address 3: 0x%lx\n", &evil_str[3]);
     // Call the victim with normal input
     victim("0123456789ABCDE"); // Normal input of expected length == 16. No issues here
 
