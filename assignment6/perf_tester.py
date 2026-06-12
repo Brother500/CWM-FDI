@@ -1,10 +1,11 @@
-# A Program to test the performance of a computer under load, record any bottlenecks or issues, and return solutions to any bottlenecks or issues.
+# A Program to test the performance of a computer under load, record whether CPU or Memory cause a bottleneck, and return solutions to any bottlenecks.
 
 #### Imports    ####
 
 import os
 import time
-import numpy as np
+
+import math
 
 #### Variables  ####
 
@@ -19,7 +20,6 @@ i = .01             # Time between samples in seconds
 # Retrieved 2026-06-12, License - CC BY-SA 4.0
 def get_CPU_use():
     return(str(os.popen("top -b -n1 | grep 'Cpu(s)' | awk '{print $2 + $4}'").readline().strip())) 
-
 
 ## Get Memory usage at one moment as a percentage
 # Source - https://stackoverflow.com/a/42275253
@@ -50,33 +50,36 @@ def record_Memory_usage(Memory_array,n,i):
 ## Find average value of array, and return this value
 def find_array_avg(array):
     array_length = len(array)               # Find length of array
-    array_sum = np.sum(array)               # Find sum of array
-    array_avg = array_sum / array_length    # Find average of array
+    array_sum = sum(array)               # Find sum of array
+    array_avg = int(array_sum / array_length)    # Find average of array
     return(array_avg)
-
 
 #### Main code  ####
 
+# Initialisation
 CPU_bottleneck = False      # It is assumed that CPU and Memory are not bottlenecks until proven otherwise
 Memory_bottleneck = False
 CPU_usage = []              # Initialise empty arrays for CPU & Memory usage
 Memory_usage = []
 
+# Recording data
 CPU_usage = record_CPU_usage(CPU_usage,n,i)                 # Record CPU usage n times, i seconds apart
 Memory_usage = record_Memory_usage(Memory_usage,n,i)        # Record Memory usage n times, i seconds apart
 CPU_avg = find_array_avg(CPU_usage)                         # Find average CPU usage
 Memory_avg = find_array_avg(Memory_usage)                   # Find average Memory usage
-print("CPU average % is:", CPU_avg, "Memory average % is", Memory_avg)
-if CPU_avg >= 95:                                           # Bottleneck if average CPU usage > 95%
+print("CPU avg {}%, Memory avg {}%".format(CPU_avg, Memory_avg))
+
+# Analysis of data
+if CPU_avg >= 94:                                           # Bottleneck if average CPU usage >= 94%
     CPU_bottleneck = True
-if Memory_avg >= 80:                                        # Bottleneck if average Memory usage > 80%
+if Memory_avg >= 80:                                        # Bottleneck if average Memory usage >= 80%
     Memory_bottleneck = True
 if CPU_bottleneck == True and Memory_bottleneck == True:    # If both are high, neither is a bottleneck
-    print("Both CPU and Memory are utilised well, neither is a bottleneck for this program.")
+    print("Both CPU and Memory are utilised well! Neither is a bottleneck for this program.")
 else:
     if CPU_bottleneck == True:                              # Report & propose solutions to bottlenecks
-        print("CPU usage averages over 95%! This is a bottleneck. Consider upgrading to a more powerful CPU.")
+        print("CPU usage averages {}%! This is a bottleneck. Consider upgrading to a more powerful CPU.".format(CPU_avg))
     elif Memory_bottleneck == True:
-        print("Memory usage averages over 80%! This is a bottleneck. Consider closing tabs and programs that are not in use or upgrading to a larger amount of RAM.")
+        print("Memory usage averages {}%! This is a bottleneck. Consider closing tabs and programs that are not in use or upgrading to a larger amount of RAM.".format(Memory_avg))
     else:                                                   # Neither is high so cannot tell if there is a bottleneck
         print("Not enough load to tell if there is a bottleneck. Try a more strenuous program.")
